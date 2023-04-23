@@ -1,0 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+}
+input {
+  margin: 0 0.5em !important;
+}
