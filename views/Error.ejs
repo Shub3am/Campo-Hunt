@@ -1,0 +1,10 @@
+<%- include('./templates/header', {title: "Error"}) %>
+<body>
+  <%- include('./templates/navbar', {}) %>
+  <div class="alert mx-auto my-auto flex alert-danger" role="alert">
+    <h4 class="alert-heading"><%= error %>! Please Try After Sometime</h4>
+    <p>We are sad to keep you waiting, we are working on the problem asap!</p>
+    <hr />
+    <p class="mb-0">Contact Us for More queries</p>
+  </div>
+</body>

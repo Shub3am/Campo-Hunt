@@ -49,7 +49,7 @@ App.get("/camps/:id/edit", async (req, res) => {
   console.log(data);
   data
     ? res.render("EditCamp", { camp: data })
-    : res.send("Can't Find the Camp");
+    : res.status(404).render("Error", { error: "Not Found" });
 });
 
 App.put("/camps/:id/edit", async (req, res) => {
@@ -71,7 +71,7 @@ App.put("/camps/:id/edit", async (req, res) => {
 
     status ? res.send("Updated") : res.send("Error Found");
   } catch (e) {
-    res.status(404).send(`Something Went Wrong! ${e}`);
+    res.status(404).render("Error", { error: "403" });
   }
 });
 
@@ -80,18 +80,20 @@ App.delete("/camps/:id/delete", async (req, res) => {
   const Status = await map.findByIdAndDelete(id).catch((err) => {
     return false;
   });
-  Status ? res.redirect("/camps") : res.send("Error Deleting");
+  Status
+    ? res.redirect("/camps")
+    : res.status(404).render("Error", { error: "Error Removing" });
 });
 
 App.get("/camps/:id", async (req, res) => {
   const { id } = req.params;
   map.findById(id, (err, data) => {
     if (err) {
-      res.status(404).send("Not Found");
+      res.status(404).render("Error", { error: "404" });
     } else {
       data
         ? res.render("SingleCamp", { camp: data })
-        : res.send("Can't Find the Camp");
+        : res.status(404).render("Error", { error: "Camp Not Found" });
     }
   });
 });
@@ -104,7 +106,9 @@ App.post("/camps/new", async (req, res) => {
     location: location,
     price: price,
   });
-  status ? res.send("Successfully Added Camp") : res.send("Failed");
+  status
+    ? res.send("Successfully Added Camp")
+    : res.status(404).render("Error", { error: "Failed" });
 });
 
 App.get("/seeder", async (req, res) => {
@@ -126,7 +130,9 @@ App.get("/seeder", async (req, res) => {
   }
   res.send("Done");
 }); // This Route is for Seeding Fake Data
-
+App.all("*", (req, res) => {
+  res.status(404).render("Error", { error: "404" });
+});
 App.use((req, res, next) => {
   res.send("404! Not Found");
 });
