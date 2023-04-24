@@ -5,6 +5,7 @@ const path = require("path");
 const method = require("method-override");
 const { locations, descriptors, places } = require("./seeds");
 const morgan = require("morgan");
+const Joi = require("joi");
 
 App.use(method("_method"));
 App.set("views", path.join(__dirname + "/views"));
@@ -14,8 +15,15 @@ App.set("view engine", "ejs");
 App.use(express.urlencoded({ extended: true }));
 App.use(morgan("dev"));
 App.use((req, res, next) => {
-  console.log(res.statusCode);
-  next();
+  const CheckData = Joi.object({
+    title: Joi.string().alphanum().min(3).max(35),
+    price: Joi.number().min(1),
+  });
+  const Verification = CheckData.validate({
+    title: req.body.title,
+    price: req.body.price,
+  });
+  Verification.error ? res.send(Verification.error.details[0].message) : next();
 });
 const Mongo = require("mongoose");
 const map = require("./models/map");
