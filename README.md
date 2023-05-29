@@ -1,4 +1,4 @@
-# YELP
-App To Find Nearby Camps
+# CAMPO-HUNT
+Find Nearby Adventure Spots
 
 ## Development in Progress
